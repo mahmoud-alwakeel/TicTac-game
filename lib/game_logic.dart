@@ -1,4 +1,8 @@
 class Player{}
 
 
-class Game{}
+class Game{
+  playGame(int index, String activePlayer){
+
+  }
+}
