@@ -54,18 +54,26 @@ class _HomePageState extends State<HomePage> {
                   ...List.generate(
                       9,
                       (index) => InkWell(
-                        borderRadius: BorderRadius.circular(16),
-                            onTap: gameOver? null : () => _onTap(index),
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: gameOver ? null : () => _onTap(index),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Theme.of(context).shadowColor,
                                 borderRadius: BorderRadius.circular(16),
                               ),
-                              child: const Center(
+                              child: Center(
                                   child: Text(
-                                "X",
-                                style:
-                                    TextStyle(color: Colors.blue, fontSize: 52),
+                                    // as it's static we reach id directly using the class name
+                                    Player.playerX.contains(index)
+                                        ? "X"
+                                    : Player.playerO.contains(index)?
+                                    "O" : " ",
+                                style:  TextStyle(
+                                  color: Player.playerX.contains(index)
+                                      ? Colors.blue
+                                      : Colors. pink,
+                                  fontSize: 52,
+                                ),
                               )),
                             ),
                           ))
@@ -82,6 +90,8 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton.icon(
               onPressed: () {
                 setState(() {
+                  Player.playerX = [];
+                  Player.playerO = [];
                   activePlayer = "X";
                   gameOver = false;
                   turn = 0;
@@ -101,6 +111,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   _onTap(int index) {
-    game.playGame(index , activePlayer);
+    game.playGame(index, activePlayer);
+    updateState();
+  }
+
+  void updateState(){
+    setState(() {
+      // here we are checking which player's turn to play
+      // and switching between player x and o
+      activePlayer = (activePlayer == "X")? "O":"X";
+    });
   }
 }
